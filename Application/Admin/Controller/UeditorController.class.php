@@ -77,7 +77,42 @@ class UeditorController extends BaseController
         $return_data['state'] = $state;
         $this->ajaxReturn($return_data,'JSON');
     }
+	
+	/**
+     *上传视频
+     */
+    public function movieUp()
+    {
+        // 上传图片框中的描述表单名称，
+        $title = htmlspecialchars($_POST['pictitle'], ENT_QUOTES);
+		$config = array(
+            "savePath" => $this->savePath,
+            "maxSize" =>  100*1024*1024, // 单位B
+            "exts" => explode(",",  'avi,flv,wma,rmvb,rm,flash,mp4,mid,3gp'),
+            "subName" => $this->sub_name,
+        );
 
+        $upload = new Upload($config);
+        $info = $upload->upload();
+
+        if ($info) {
+			 $state = "SUCCESS";  
+        } else {
+            $state = "ERROR" . $upload->getError();
+        }
+		
+		if(!isset($info['upfile'])){
+        	$info['upfile'] = $info['Filedata'];
+        }
+		
+        $return_data['url'] = $info['upfile']['urlpath'];
+		$return_data['title'] = $title;
+        $return_data['fileType'] = $info['upfile']['ext'];
+        $return_data['original'] = $info['upfile']['name'];
+        $return_data['state'] = $state;
+        $this->ajaxReturn($return_data,'JSON');
+    }
+	
     /**
      * 获取远程图片
      */

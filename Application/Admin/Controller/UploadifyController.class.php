@@ -52,5 +52,21 @@ class UploadifyController extends BaseController{
             exit;
         }
     }
-
+	
+	public function uploadmovie(){
+		$func = I('func');
+        $path = I('path','temp');
+        $info = array(
+        	'num'=> I('num'),
+            'title' => '',       	
+        	'upload' =>U('Admin/Ueditor/movieUp',array('savepath'=>$path,'pictitle'=>'movie','dir'=>'movie')),
+            'size' => 100,
+            'type' =>'avi,flv,wma,rmvb,rm,flash,mp4,mid,3gp',
+            'input' => I('input'),
+            'func' => empty($func) ? 'undefined' : $func,
+        );
+        $this->assign('info',$info);
+        $this->display();
+	}
+	
 }

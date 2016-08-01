@@ -1,0 +1,111 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+	<section class="content">
+       <div class="row">
+       		<div class="col-xs-12">
+	       		<div class="box">
+	           	<div class="box-header">
+	                <nav class="navbar navbar-default">	     
+				        <div class="collapse navbar-collapse">
+				          <form class="navbar-form form-inline" action="{:U('Admin/Movie/movieList')}" method="post">
+				            <div class="form-group">
+				              	<input type="text" name="keywords" class="form-control" placeholder="搜索">
+				            </div>
+				            <button type="submit" class="btn btn-default">搜索</button>
+				            <div class="form-group pull-right">
+					            <a href="{:U('Admin/Movie/editmovie')}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>添加视频</a>
+				            </div>		          
+				          </form>		
+				      	</div>
+	    			</nav>               
+	             </div>	    
+	             <!-- /.box-header -->
+	            <div class="box-body">	             
+	           		<div class="row">
+						<div class="col-sm-12">
+							<table id="list-table" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+								<thead>
+									<tr role="row" >
+									   <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 294px;text-align:center;">视频标题</th>
+									   <th class="sorting" width="150" tabindex="0" aria-controls="example1"  aria-label="Browser: activate to sort column ascending" style="text-align:center;">视频类别</th>
+									   <th class="sorting" tabindex="0" aria-controls="example1"  aria-label="Platform(s): activate to sort column ascending" style="text-align:center;">描述</th>
+									   <th class="sorting" width="150" tabindex="0" aria-controls="example1"  aria-label="Platform(s): activate to sort column ascending" style="text-align:center;">显示</th>
+									   <th class="sorting" width="200"  tabindex="0" aria-controls="example1"  aria-label="Engine version: activate to sort column ascending" style="text-align:center;">发布时间</th>
+									   <th class="sorting" width="300" tabindex="0" aria-controls="example1"  aria-label="CSS grade: activate to sort column ascending" style="text-align:center;">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<foreach name="list" item="vo" key="k" >
+									<tr role="row" align="center">
+										<td>{$vo.title|getSubstr=0,33}</td>
+										<td>{$vo.cat_name}</td>
+										<td>{$vo.description}</td>
+										<td>
+											<img width="20" height="20" src="__PUBLIC__/images/<if condition='$vo[is_open] eq 1'>yes.png<else />cancel.png</if>" onclick="changeTableVal('Movie','movie_id','{$vo.movie_id}','is_open',this)"/>                                        
+										</td>
+										<td>{$vo.createtime|date='Y-m-d H:i:s',###}</td>
+										<td>
+											<a target="_blank" href="{:U('Home/Movie/detail',array('movie_id'=>$vo['movie_id']))}" data-toggle="tooltip" title="" class="btn btn-info" data-original-title="查看详情"><i class="fa fa-eye"></i></a>
+											<a class="btn btn-primary" href="{:U('Movie/editmovie',array('act'=>'edit','movie_id'=>$vo['movie_id']))}"><i class="fa fa-pencil"></i></a>
+											<a class="btn btn-danger" href="javascript:void(0)" data-url="{:U('Movie/movieHandle')}" data-id="{$vo.movie_id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i></a>
+											<a href="javascript:void(0);" onclick="ClearAritcleHtml('{$vo[movie_id]}')" class="btn btn-default" title="清除静态缓存页面"><i class="fa fa-fw fa-refresh"></i></a>
+										</td>
+									</tr>
+									</foreach>
+								   </tbody>
+								<tfoot>
+							 
+								</tfoot>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 text-left"></div>
+						<div class="col-sm-6 text-right">{$page}</div>		
+					</div>
+				</div><!-- /.box-body -->
+	        </div><!-- /.box -->
+       	</div>
+       </div>
+   </section>
+</div>
+<script>
+function delfun(obj){
+	if(confirm('确认删除')){		
+		$.ajax({
+			type : 'post',
+			url : $(obj).attr('data-url'),
+			data : {act:'del',movie_id:$(obj).attr('data-id')},
+			dataType : 'json',
+			success : function(data){
+				if(data){
+					$(obj).parent().parent().remove();
+				}else{
+					layer.alert('删除失败', {icon: 2});  //alert('删除失败');
+				}
+			}
+		})
+	}
+	return false;
+}
+ 
+    /*
+     * 清除文章静态页面缓存
+     */
+    function ClearAritcleHtml(movie_id)
+    {
+    	$.ajax({
+                    type:'GET',
+                    url:"{:U('Admin/System/ClearAritcleHtml')}",
+                    data:{movie_id:movie_id},
+                    dataType:'json',
+                    success:function(data){
+                            layer.alert(data.msg, {icon: 2});								 
+                    }
+		});
+    }
+    
+</script>
+</body>
+</html>

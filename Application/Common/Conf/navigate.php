@@ -93,7 +93,23 @@
                      'linkList'=>'友情链接列表',
                      'link'=>'编辑友情链接',                                       
          	      )
-               ),        
+               ),
+			   'admin/movie'=>array(
+                'name' =>'视频管理',
+                'action'=>array(
+                     'movieList'=>'视频列表',                     
+                     'editmovie'=>'编辑视频',
+					 'categoryList'=>'视频分类',
+					 'editcategory'=>'编辑分类',
+         	      )
+               ), 
+				'admin/movieattr'=>array(
+                'name' =>'视频管理',
+                'action'=>array(
+                     'index'=>'视频属性',                     
+                     'editmovieattr'=>'编辑属性',
+         	      )
+               ),  
               'admin/admin'=>array(
                 'name' =>'权限管理',
                 'action'=>array(

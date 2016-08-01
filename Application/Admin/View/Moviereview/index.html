@@ -1,0 +1,207 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+	<section class="content">
+       <div class="row">
+       		<div class="col-xs-12">
+	       		<div class="box">
+					<div class="box-header">
+						<nav class="navbar navbar-default">	     
+							<div class="collapse navbar-collapse">
+								<form class="navbar-form form-inline" action="{:U('Admin/Moviereview/index')}" method="post">
+									<div class="form-group">
+										<input type="text" name="member" class="form-control" placeholder="评论用户">
+										<input type="text" name="movie" class="form-control" placeholder="视频名称">
+									</div>
+									<button type="submit" class="btn btn-default">搜索</button>
+									<div class="form-group pull-right">
+										<a href="{:U('Admin/Moviereview/editmoviereview')}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>添加评论</a>
+									</div>		          
+								</form>		
+							</div>
+						</nav>               
+					</div>
+					<!-- /.box-header -->					
+					<div class="box-body">
+						<div class="row">
+							<div class="col-sm-12">
+								<table id="list-table" class="table table-bordered table-striped">
+									<thead>
+										<tr role="row">
+											<th width="50px" >ID</th>
+											<th width="150" style="text-align:center;">评论人</th>
+											<th width="150" style="text-align:center;">回复人</th>
+											<th width="200" style="text-align:center;">视频</th>
+											<!--<th style="text-align:center;">评论内容</th>>-->
+											<th width="100px" style="text-align:center;">是否显示</th>
+											<th width="100px" style="text-align:center;">审核状态</th>
+											<th width="200px" style="text-align:center;">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										<foreach name="list" item="vo" key="k" >
+										<tr role="row" align="center" class="{$vo.level}" id="{$vo.level}_{$vo.id}">
+											<td >{$vo.id}</td>					     
+											<td>{$vo.member_name}</td>
+											<td>{$vo.replay_name}</td>
+											<td>{$vo.movie_name}</td>
+											<!--<td>{$vo.content}</td>-->
+											<td>
+												 <if condition="$vo.is_show eq 1">
+												 显示    
+												 <else />
+												 隐藏
+												 </if>
+											</td>
+											<td>                         
+												<if condition="$vo.audit eq 1">
+												 已通过 
+												<elseif condition="$vo.audit eq 2" />
+												未通过
+												<else />
+												未审核
+												</if>
+											</td>
+											<td>
+												<if condition="$vo.audit eq 1">
+												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,2,$vo['id']);">不通过</a>
+												<elseif condition="$vo.audit eq 2" />
+												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,1,$vo['id']);">通过</a>
+												<else />
+												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,1,$vo['id']);">通过</a>
+												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,2,$vo['id']);">不通过</a>
+												</if>
+												<a class="btn btn-primary" href="{:U('Moviereview/editmoviereview',array('act'=>'edit','id'=>$vo['id']))}"><i class="fa fa-pencil"></i></a>
+												
+												<a class="btn btn-danger" href="javascript:void(0)" data-url="{:U('Moviereview/MoviereviewHandle')}" data-id="{$vo.id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i></a>
+												
+											</td>
+										</tr>
+										</foreach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6 text-left"></div>
+							<div class="col-sm-6 text-right">{$page}</div>		
+						</div>
+					</div><!-- /.box-body -->
+	            </div><!-- /.box -->
+       		</div>
+       </div>
+     </section>
+</div>
+<script type="text/javascript">
+     
+// 以下是 bootstrap 自带的  js
+function rowClicked(obj)
+{
+  span = obj;
+
+  obj = obj.parentNode.parentNode;
+
+  var tbl = document.getElementById("list-table");
+
+  var lvl = parseInt(obj.className);
+
+  var fnd = false;
+  
+  var sub_display = $(span).hasClass('glyphicon-minus') ? 'none' : '' ? 'block' : 'table-row' ;
+  //console.log(sub_display);
+  if(sub_display == 'none'){
+	  $(span).removeClass('glyphicon-minus btn-info');
+	  $(span).addClass('glyphicon-plus btn-warning');
+  }else{
+	  $(span).removeClass('glyphicon-plus btn-info');
+	  $(span).addClass('glyphicon-minus btn-warning');
+  }
+
+  for (i = 0; i < tbl.rows.length; i++)
+  {
+      var row = tbl.rows[i];
+      
+      if (row == obj)
+      {
+          fnd = true;         
+      }
+      else
+      {
+          if (fnd == true)
+          {
+              var cur = parseInt(row.className);
+              var icon = 'icon_' + row.id;
+              if (cur > lvl)
+              {
+                  row.style.display = sub_display;
+                  if (sub_display != 'none')
+                  {
+                      var iconimg = document.getElementById(icon);
+                      $(iconimg).removeClass('glyphicon-plus btn-info');
+                      $(iconimg).addClass('glyphicon-minus btn-warning');
+                  }else{               	    
+                      $(iconimg).removeClass('glyphicon-minus btn-info');
+                      $(iconimg).addClass('glyphicon-plus btn-warning');
+                  }
+              }
+              else
+              {
+                  fnd = false;
+                  break;
+              }
+          }
+      }
+  }
+
+  for (i = 0; i < obj.cells[0].childNodes.length; i++)
+  {
+      var imgObj = obj.cells[0].childNodes[i];
+      if (imgObj.tagName == "IMG")
+      {
+          if($(imgObj).hasClass('glyphicon-plus btn-info')){
+        	  $(imgObj).removeClass('glyphicon-plus btn-info');
+        	  $(imgObj).addClass('glyphicon-minus btn-warning');
+          }else{
+        	  $(imgObj).removeClass('glyphicon-minus btn-warning');
+        	  $(imgObj).addClass('glyphicon-plus btn-info');
+          }
+      }
+  }
+
+}
+
+function delfun(obj){
+	if(confirm('确认删除')){		
+		$.ajax({
+			type : 'post',
+			url : $(obj).attr('data-url'),
+			data : {act:'del',id:$(obj).attr('data-id')},
+			dataType : 'json',
+			success : function(data){
+				if(data==1){
+					$(obj).parent().parent().remove();
+				}else{
+					layer.alert(data, {icon: 2});  //alert(data);
+				}
+			}
+		})
+	}
+	return false;
+}
+
+function changedata(obj,audit,id){
+	if(confirm('确认操作吗')){		
+		$.post($(obj).attr('data-url'),{audit:'audit',id:id},function(data){
+			if(data.result == 1){
+				window.location.reload();
+			}else{
+				layer.alert(data, {icon: 2});
+			}
+		});
+	}
+	return false;
+}
+
+</script>
+</body>
+</html>
