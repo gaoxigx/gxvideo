@@ -28,7 +28,7 @@
 								<table id="list-table" class="table table-bordered table-striped">
 									<thead>
 										<tr role="row">
-											<th width="50px" >ID</th>
+											<th width="50px" style="text-align:center;">ID</th>
 											<th width="150" style="text-align:center;">评论人</th>
 											<th width="150" style="text-align:center;">回复人</th>
 											<th width="200" style="text-align:center;">视频</th>
@@ -64,16 +64,16 @@
 											</td>
 											<td>
 												<if condition="$vo.audit eq 1">
-												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,2,$vo['id']);">不通过</a>
+												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,2,{$vo.id});">不通过</a>
 												<elseif condition="$vo.audit eq 2" />
-												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,1,$vo['id']);">通过</a>
+												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,1,{$vo.id});">通过</a>
 												<else />
-												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,1,$vo['id']);">通过</a>
-												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,2,$vo['id']);">不通过</a>
+												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,1,{$vo.id});">通过</a>
+												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,2,{$vo.id});">不通过</a>
 												</if>
 												<a class="btn btn-primary" href="{:U('Moviereview/editmoviereview',array('act'=>'edit','id'=>$vo['id']))}"><i class="fa fa-pencil"></i></a>
 												
-												<a class="btn btn-danger" href="javascript:void(0)" data-url="{:U('Moviereview/MoviereviewHandle')}" data-id="{$vo.id}" onclick="delfun(this)"><i class="fa fa-trash-o"></i></a>
+												<a class="btn btn-danger" href="javascript:void(0)" data-url="{:U('Moviereview/MoviereviewHandle')}" data-id="{$vo.id}" memberid="{$vo.memberid}" onclick="delfun(this)"><i class="fa fa-trash-o"></i></a>
 												
 											</td>
 										</tr>
@@ -175,7 +175,7 @@ function delfun(obj){
 		$.ajax({
 			type : 'post',
 			url : $(obj).attr('data-url'),
-			data : {act:'del',id:$(obj).attr('data-id')},
+			data : {act:'del',id:$(obj).attr('data-id'),memberid:$(obj).attr('memberid')},
 			dataType : 'json',
 			success : function(data){
 				if(data==1){
@@ -191,7 +191,7 @@ function delfun(obj){
 
 function changedata(obj,audit,id){
 	if(confirm('确认操作吗')){		
-		$.post($(obj).attr('data-url'),{audit:'audit',id:id},function(data){
+		$.post($(obj).attr('data-url'),{audit:audit,id:id},function(data){
 			if(data.result == 1){
 				window.location.reload();
 			}else{

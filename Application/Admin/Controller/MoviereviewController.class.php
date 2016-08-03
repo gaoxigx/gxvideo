@@ -113,7 +113,7 @@ class MoviereviewController extends BaseController{
         
         if($data['act'] == 'del'){      	
         	$res = D('moviereview')->where('replayid ='.$data['memberid'])->select(); 
-        	if ($res)
+        	if($res)
         	{
         		exit(json_encode('还有回复信息，不能删除'));
         	}
@@ -129,6 +129,14 @@ class MoviereviewController extends BaseController{
     }
 	
     public function Changedata(){
+		$audit = I('audit');
+		$map['id'] = I('id');
+		$result = D('moviereview')->where($map)->setField('audit',$audit);
 		
+		if($result){
+			$this->ajaxReturn(array('result'=>1));
+		}else{
+			$this->ajaxReturn(array('result'=>0));
+		}
 	}
 }

@@ -109,6 +109,13 @@
                      'index'=>'视频属性',                     
                      'editmovieattr'=>'编辑属性',
          	      )
+               ),
+				'admin/moviereview'=>array(
+                'name' =>'评论管理',
+                'action'=>array(
+                     'index'=>'视频评论',                     
+                     'editmoviereview'=>'编辑评论',
+         	      )
                ),  
               'admin/admin'=>array(
                 'name' =>'权限管理',
