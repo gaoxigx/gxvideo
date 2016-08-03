@@ -115,6 +115,7 @@
                 'action'=>array(
                      'index'=>'视频评论',                     
                      'editmoviereview'=>'编辑评论',
+					 'replaymovie'=>'回复评论',
          	      )
                ),  
               'admin/admin'=>array(
