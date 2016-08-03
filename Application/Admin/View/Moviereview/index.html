@@ -35,6 +35,7 @@
 											<!--<th style="text-align:center;">评论内容</th>>-->
 											<th width="100px" style="text-align:center;">是否显示</th>
 											<th width="100px" style="text-align:center;">审核状态</th>
+											<th width="100px" style="text-align:center;">评论时间</th>
 											<th width="200px" style="text-align:center;">操作</th>
 										</tr>
 									</thead>
@@ -63,6 +64,9 @@
 												</if>
 											</td>
 											<td>
+												{$vo.createtime|date='Y-m-d H:i:s',###}
+											</td>  
+											<td>
 												<if condition="$vo.audit eq 1">
 												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,2,{$vo.id});">不通过</a>
 												<elseif condition="$vo.audit eq 2" />
@@ -71,8 +75,8 @@
 												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,1,{$vo.id});">通过</a>
 												<a class="btn btn-primary" href="javascript:void(0)" data-url="{:U('Moviereview/Changedata')}" onclick="changedata(this,2,{$vo.id});">不通过</a>
 												</if>
+												<a class="btn btn-primary" href="{:U('Moviereview/replaymovie',array('act'=>'replay','id'=>$vo['id']))}">回复</a>
 												<a class="btn btn-primary" href="{:U('Moviereview/editmoviereview',array('act'=>'edit','id'=>$vo['id']))}"><i class="fa fa-pencil"></i></a>
-												
 												<a class="btn btn-danger" href="javascript:void(0)" data-url="{:U('Moviereview/MoviereviewHandle')}" data-id="{$vo.id}" memberid="{$vo.memberid}" onclick="delfun(this)"><i class="fa fa-trash-o"></i></a>
 												
 											</td>

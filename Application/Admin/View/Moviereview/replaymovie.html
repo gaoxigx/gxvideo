@@ -20,98 +20,54 @@
                 <div class="col-sm-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">编辑评论</h3>
+                            <h3 class="box-title">回复评论</h3>
                         </div>
                         <!-- /.box-header -->
                         <form action="{:U('Moviereview/MoviereviewHandle')}" method="post" class="form-horizontal">
-                        <div class="box-body">                         
-							<!--
-							<div class="form-group">
-								<label class="control-label col-sm-2">评论用户</label>
-								<div class="col-sm-2">
-									<if condition="$info.is_admin == 1">
-									<select class="small form-control" tabindex="1" name="memberid">
-										<foreach name="admins" item="val" key="key">
-										<option value="{$key}" <if condition="$info.memberid == $key">selected="selected"</if>>{$val}</option>  
-										</foreach>
-									</select>
-									<else/>
-									<select class="small form-control" tabindex="1" name="memberid">
-										<foreach name="members" item="val">
-										<option value="{$val.user_id}" <if condition="$info.memberid == $val['user_id']">selected="selected"</if>>{$val.nickname}</option>  
-										</foreach>
-									</select>
-									</if>
-								</div>
-							</div>-->
-							<div class="form-group">
-								<label class="control-label col-sm-2">评论用户</label>
-								<div class="col-sm-2">
-									<if condition="$act == 'edit'">
-										<if condition="$info.is_admin == 1">
-										<div style="padding-top:5px;">{$admins[$info['memberid']]}</div>
-										<else/>
-										<div style="padding-top:5px;">{$members[$info['memberid']]['nickname']}</div>
-										</if>
-									<else/>
-									<select class="small form-control" tabindex="1" name="memberid">
-										<foreach name="members" item="val">
-										<option value="{$val.user_id}" <if condition="$info.memberid == $val['user_id']">selected="selected"</if>>{$val.nickname}</option>  
-										</foreach>
-									</select>
-									</if>
-								</div>
-							</div>
+                        <div class="box-body">                  
 							<div class="form-group">
 								<label class="control-label col-sm-2">回复用户</label>
 								<div class="col-sm-2">
-									<select class="small form-control" tabindex="1" name="replayid">
-										<option value="0">选择用户</option>  
-										<foreach name="members" item="val">
-										<option value="{$val.user_id}" <if condition="$info.replayid == $val['user_id']">selected="selected"</if>>{$val.nickname}</option>  
-										</foreach>                 
-									</select>
+									<input type="hidden" name="replayid" value="{$info.memberid}"/>
+									<div style="padding-top:5px;">{$members[$info['memberid']]['nickname']}</div>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-sm-2">评论视频</label>
 								<div class="col-sm-2">
-									<select class="small form-control" tabindex="1" name="movieid">
-										<foreach name="movies" item="val" key="key">
-										<option value="{$key}" <if condition="$info.movieid == $key ">selected="selected"</if>>{$val}</option>  
-										</foreach> 
-									</select>
+									<input type="hidden" name="movieid" value="{$info.movieid}"/>
+									<div style="padding-top:5px;">{$movies[$info['movieid']]}</div>
 								</div>
 							</div>
+							
 							<div class="form-group">
 								<label class="control-label col-sm-2">是否显示</label>
 								
 								<div class="col-sm-10">
-									<label> <input type="radio" name="is_show" <if condition="$info.is_show eq 1">checked</if> value="1"> 是</label>
-									<label> <input type="radio" name="is_show" <if condition="$info.is_show eq 0">checked</if> value="0"> 否</label>
+									<label> <input type="radio" name="is_show" checked="checked" value="1"> 是</label>
+									<label> <input type="radio" name="is_show" value="0"> 否</label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-sm-2">审核</label>
 								
 								<div class="col-sm-10">
-									<label> <input type="radio" name="audit" <if condition="$info.audit eq 1">checked</if> value="1"> 通过</label>
-									<label> <input type="radio" name="audit" <if condition="$info.audit eq 2">checked</if> value="2"> 不通过</label>
-									<label> <input type="radio" name="audit" <if condition="$info.audit eq 0">checked</if> value="0"> 未审核</label>
+									<label> <input type="radio" name="audit" checked="checked" value="1"> 通过</label>
+									<label> <input type="radio" name="audit" value="2"> 不通过</label>
+									<label> <input type="radio" name="audit" value="0"> 未审核</label>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-sm-2">评论内容</label>
 								<div class="col-sm-8">
 								<textarea class="span12 ckeditor" id="post_content" name="content" title="">
-									{$info.content}
+									
 								</textarea>
 								</div>
 							</div>
                         </div>
                         <div class="box-footer">
                         	<input type="hidden" name="act" value="{$act}">
-                        	<input type="hidden" name="id" value="{$info.id}">
                         	<button type="reset" class="btn btn-primary pull-left"><i class="icon-ok"></i>重填  </button>                       	                 
                             <button type="submit" class="btn btn-primary pull-right"><i class="icon-ok"></i>提交  </button>
                         </div>

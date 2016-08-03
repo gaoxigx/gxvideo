@@ -26,6 +26,11 @@ class MoviereviewController extends BaseController{
 		if($member != ''){
 			$mem_map['nickname'] = array('like','%'.$member.'%');
 			$userid = D('users')->where($mem_map)->getField('user_id',true);
+			$admin_map['user_name'] = array('like','%'.$member.'%');
+			$adminid = D('admin')->where($admin_map)->getField('admin_id',true);
+			if(!empty($adminid)){
+				$userid = array_merge($userid,$adminid);
+			}
 			$userid = implode(',',$userid);
 			$map['memberid'] = array('in',$userid);
 		}
@@ -38,9 +43,14 @@ class MoviereviewController extends BaseController{
 		
         $list = $moviereview->where($map)->order('createtime desc')->page("$p,$size")->select();
 		$members = $this->members();
+		$admins = $this->admins();
 		$movies = $this->movies();
 		foreach($list as $k=>$v){
-			$list[$k]['member_name'] = $members[$v['memberid']]['nickname'];
+			if($v['is_admin'] == 1){
+				$list[$k]['member_name'] = $admins[$v['memberid']];
+			}else{
+				$list[$k]['member_name'] = $members[$v['memberid']]['nickname'];
+			}
 			$list[$k]['replay_name'] = $members[$v['replayid']]['nickname'];
 			$list[$k]['movie_name'] = $movies[$v['movieid']];
 		}
@@ -64,6 +74,28 @@ class MoviereviewController extends BaseController{
         }
 		
 		$this->initEditor();
+		$admins = $this->admins();
+		$members = $this->members();
+		$movies = $this->movies();
+		
+		$this->assign('admins',$admins);
+		$this->assign('members',$members);
+		$this->assign('movies',$movies);
+		$this->assign('act',$act);
+        $this->display();
+    }
+	
+    public function replaymovie(){ 
+ 		$act = I('GET.act');
+        $id = I('GET.id');
+		
+        $info = array();
+        if($id){
+            $info = D('moviereview')->where('id='.$id)->find();
+            $this->assign('info',$info);
+        }
+		
+		$this->initEditor();
 		$members = $this->members();
 		$movies = $this->movies();
 		
@@ -72,10 +104,15 @@ class MoviereviewController extends BaseController{
 		$this->assign('act',$act);
         $this->display();
     }
-    
+	
 	protected function members(){
 		$members = D('users')->order('user_id desc')->getField('user_id,email,nickname',true);
 		return $members;
+	}
+	
+	protected function admins(){
+		$admins = D('admin')->getField('admin_id,user_name',true);
+		return $admins;
 	}
 	
 	protected function movies(){
@@ -110,7 +147,13 @@ class MoviereviewController extends BaseController{
         if($data['act'] == 'edit'){
 			$d = D('moviereview')->where("id=$data[id]")->save($data);
         }
-        
+        if($data['act'] == 'replay'){
+			$data['is_admin'] = 1;
+			$data['memberid'] = session('admin_id');
+			$data['ip_address'] = getIP();
+			$data['createtime'] = time();
+			$d = D('moviereview')->add($data);
+        }
         if($data['act'] == 'del'){      	
         	$res = D('moviereview')->where('replayid ='.$data['memberid'])->select(); 
         	if($res)
