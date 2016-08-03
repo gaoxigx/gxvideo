@@ -10,7 +10,7 @@
 				        <div class="collapse navbar-collapse">
 				            <div class="navbar-form row">
 				            	<button class="btn bg-navy" type="button" onclick="$('span[id^=\'icon_\']').trigger('click');"><i class="fa fa-angle-double-up"></i>收缩</button>
-					            <a href="{:U('Movieattr/editmovieattr')}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>新增分类</a>
+					            <a href="{:U('Movieattr/editmovieattr')}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>新增属性</a>
 				            </div>
 				      	</div>
 	    			</nav> 	               
@@ -21,12 +21,13 @@
 	              <table id="list-table" class="table table-bordered table-striped">
 	                 <thead>
 	                   <tr role="row">
-		                   <th  style="width: 350px;">分类名称</th>
-		                   <th style="text-align:center;">分类类型</th>
+		                   <th width="250" style="width: 250px;">属性名称</th>
+						   <th width="150" style="text-align:center;">属性唯一标识</th>
+		                   <!--<th style="text-align:center;">属性别名</th>-->
 		                   <th style="text-align:center;">描述</th>
-		                   <th style="text-align:center;">是否显示</th>
-		                   <th style="text-align:center;">排序</th>
-		                   <th style="text-align:center;">操作</th>
+		                   <th width="150" style="text-align:center;">是否显示</th>
+		                   <th width="150" style="text-align:center;">排序</th>
+		                   <th width="150" style="text-align:center;">操作</th>
 	                   </tr>
 	                 </thead>
 					<tbody>
@@ -36,8 +37,9 @@
 	                      <if condition="$vo.is_leaf neq 1">
 		                      <span class="glyphicon glyphicon-minus btn-warning"  id="icon_{$vo.level}_{$vo.id}" aria-hidden="true" onclick="rowClicked(this)" ></span>&nbsp;				    
 					      </if><span>{$vo.name}</span>
-					     </td>					     
-					     <td>{$vo.attr_alias}</td>
+					     </td>
+						<td>{$vo.identify}</td>
+					    <!-- <td>{$vo.attr_alias}</td>-->
 					     <td>{$vo.attr_desc}</td>
 	                     <td>
                              <if condition="$vo[show_in_nav] eq 1"> 显示    
