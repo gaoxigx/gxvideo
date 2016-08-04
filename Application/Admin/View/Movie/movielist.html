@@ -29,6 +29,10 @@
 									<tr role="row" >
 									   <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 294px;text-align:center;">视频标题</th>
 									   <th class="sorting" width="150" tabindex="0" aria-controls="example1"  aria-label="Browser: activate to sort column ascending" style="text-align:center;">视频类别</th>
+									   <th width="100" style="text-align:center;">频道</th>
+									   <th width="100" style="text-align:center;">主题</th>
+									   <th width="100" style="text-align:center;">标签</th>
+									   <th width="100" style="text-align:center;">话题</th>
 									   <th class="sorting" tabindex="0" aria-controls="example1"  aria-label="Platform(s): activate to sort column ascending" style="text-align:center;">描述</th>
 									   <th class="sorting" width="150" tabindex="0" aria-controls="example1"  aria-label="Platform(s): activate to sort column ascending" style="text-align:center;">显示</th>
 									   <th class="sorting" width="200"  tabindex="0" aria-controls="example1"  aria-label="Engine version: activate to sort column ascending" style="text-align:center;">发布时间</th>
@@ -40,6 +44,10 @@
 									<tr role="row" align="center">
 										<td>{$vo.title|getSubstr=0,33}</td>
 										<td>{$vo.cat_name}</td>
+										<td>{$vo.channel}</td>
+										<td>{$vo.topic}</td>
+										<td>{$vo.label}</td>
+										<td>{$vo.gambit}</td>
 										<td>{$vo.description}</td>
 										<td>
 											<img width="20" height="20" src="__PUBLIC__/images/<if condition='$vo[is_open] eq 1'>yes.png<else />cancel.png</if>" onclick="changeTableVal('Movie','movie_id','{$vo.movie_id}','is_open',this)"/>                                        

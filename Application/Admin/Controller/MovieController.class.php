@@ -31,9 +31,14 @@ class MovieController extends BaseController{
 
         $MovieCat = new MovieCatLogic();
         $cats = $MovieCat->movie_cat_list('movie_cat',0,0,false);
+		$allattrs = $this->getallattrs();
         if($res){
         	foreach ($res as $val){
-        		$val['cat_name'] = $cats[$val['cat_id']]['cat_name'];      		
+        		$val['cat_name'] = $cats[$val['cat_id']]['cat_name'];     
+				$val['channel'] = $allattrs[$val['channel']];
+				$val['topic'] = $allattrs[$val['topic']];
+				$val['label'] = $allattrs[$val['label']];	
+				$val['gambit'] = $allattrs[$val['gambit']];	
         		$list[] = $val;
         	}
         }
@@ -51,17 +56,34 @@ class MovieController extends BaseController{
            $movie_id = I('GET.movie_id');
            $info = D('movie')->where('movie_id='.$movie_id)->find();
         }
+		
         $cats = $MovieCat->movie_cat_list('movie_cat',0,$info['cat_id']);
+		$attrs = $this->getattrs();
+		
         $this->assign('cat_select',$cats);
         $this->assign('act',$act);
+		$this->assign('attrs',$attrs);
         $this->assign('info',$info);
         //$this->initEditor();
         $this->display();
     }
     
+	protected function getattrs($pid=0){
+		$attrs = D('movieattr')->where('show_in_nav=1 and parent_id='.$pid)->select();
+		if(!empty($attrs)){
+			foreach($attrs as $k=>$v){
+				$attrs[$k]['child'] = $this->getattrs($v['id']);
+			}
+		}
+		return $attrs;
+	}
+	protected function getallattrs(){
+		$attrs = D('movieattr')->where('show_in_nav=1')->getField('id,cat_name');
+		return $attrs;
+	}
+	
     public function movieHandle(){
         $data = I('post.');
-      
         if($data['act'] == 'add'){
         	$data['authorid'] = session('admin_id');
 			$data['createtime'] = time(); 
@@ -73,6 +95,7 @@ class MovieController extends BaseController{
 			$data['is_hot'] = !empty($data['is_hot'])?$data['is_hot']:0;
 			$data['index_show'] = !empty($data['index_show'])?$data['index_show']:0;
 			$data['modifytime'] = time(); 
+			
 			$r = D('movie')->where('movie_id='.$data['movie_id'])->save($data);
         }
         
