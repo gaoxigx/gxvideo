@@ -21,7 +21,7 @@
 
 <script src="__PUBLIC__/plugins/validation/dist/jquery.validate.js"></script>
 <script src="__PUBLIC__/plugins/validation/dist/localization/messages_zh.js"></script> 
-
+<script src="__PUBLIC__/js/movie.js"></script>
 <div class="wrapper">
     <include file="Public/breadcrumb"/>
    	<section class="content">
@@ -35,13 +35,13 @@
                 <form class="form-horizontal" action="{:U('Admin/Movie/movieHandle')}" id="add_post" method="post">
 					<div class="box-body">
 						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">视频标题</label>
+						  <label for="inputEmail3" class="col-sm-2 control-label">视频标题<b class="cerror">*</b></label>
 						  <div class="col-sm-8">
 							<input type="text" class="form-control" value="{$info.title}" name="title" >
 						  </div>
 						</div>
 						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">视频类别</label>
+						  <label for="inputEmail3" class="col-sm-2 control-label">视频类别<b class="cerror">*</b></label>
 						  <div class="col-sm-2">
 								<select class="small form-control" name="cat_id">
 									<option value="0">选择分类</option>
@@ -63,12 +63,18 @@
 						</div>
 						</foreach>
 						<div class="form-group">
-							<label for="text" class="col-sm-2 control-label">展示图</label>                   	
-							<div class="col-sm-8"><input type="text" id="imagetext" name="thumb" value="{$info.thumb}" style="width:410px;"><input type="button" class="button" onClick="GetUploadify(1,'imagetext','moviebanner','')"  value="上传图片"/></div>
+							<label for="text" class="col-sm-2 control-label">展示图<b class="cerror">*</b></label>                   	
+							<div class="col-sm-8">
+								<input type="text" id="imagetext" name="thumb" value="{$info.thumb}" style="width:410px;float:left;">
+								<input type="button" class="button" onClick="GetUploadify(1,'imagetext','moviebanner','')"  value="上传图片" style="float:left;" />
+							</div>
 						</div>
 						<div class="form-group">
-							<label for="text" class="col-sm-2 control-label">上传视频</label>                   	
-							<div class="col-sm-8"><input type="text" id="filetext" name="file_url" value="{$info.file_url}" style="width:410px;"><input type="button" class="button" onClick="GetUploadifymovie(1,'filetext','movie','')"  value="上传视频"/></div>
+							<label for="text" class="col-sm-2 control-label">上传视频<b class="cerror">*</b></label>                   	
+							<div class="col-sm-8">
+								<input type="text" id="filetext" name="file_url" value="{$info.file_url}" style="width:410px;float:left;">
+								<input type="button" class="button" onClick="GetUploadifymovie(1,'filetext','movie','')"  value="上传视频" style="float:left;"/>
+							</div>
 						</div>
 						
 						<div class="form-group">

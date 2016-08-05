@@ -24,7 +24,6 @@ $(function(){
 		
 		$.validator.addMethod("cat_required", function(value,element) {
 			if(value == 0){
-				//return this.optional(element);
 				return false;
 			}else{
 				return true;
