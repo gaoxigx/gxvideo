@@ -19,152 +19,154 @@
 <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
 <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
 
+<script src="__ROOT__/Public/plugins/validation/dist/jquery.validate.js" type="text/javascript"></script>
+<script src="__ROOT__/Public/plugins/validation/dist/localization/messages_zh.js" type="text/javascript"></script>
+<script src="__ROOT__/Public/js/movie.js" type="text/javascript"></script>
+	
 <div class="wrapper">
     <include file="Public/breadcrumb"/>
    	<section class="content">
-       <div class="row">
+		<div class="row">
 			<div class="col-md-12">
 			
-			<div class="box box-info">
-                <div class="box-header with-border">
-                  <h3 class="box-title">发布视频</h3>
-                </div>
-                <form class="form-horizontal" action="{:U('Admin/Movie/movieHandle')}" id="add_post" method="post">
-					<div class="box-body">
-						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">视频标题</label>
-						  <div class="col-sm-8">
-							<input type="text" class="form-control" value="{$info.title}" name="title" >
-						  </div>
-						</div>
-						<div class="form-group">
-						  <label for="inputEmail3" class="col-sm-2 control-label">视频类别</label>
-						  <div class="col-sm-2">
-								<select class="small form-control" name="cat_id">
-									<option value="0">选择分类</option>
-									{$cat_select} 
-								</select>
-						  </div>
-						</div>
-						<foreach name="attrs" item="val">
-						<div class="form-group">
-							<label for="inputEmail3" class="col-sm-2 control-label">{$val.cat_name}</label>
-							<div class="col-sm-2">
-								<select class="small form-control" name="{$val.identify}">
-									<option value="0">选择{$val.cat_name}</option>
-									<foreach name="val['child']" item="v">
-									<option value="{$v.id}" <if condition="$info[$val['identify']] == $v['id']">selected="selected"</if>>{$v.cat_name}</option>
-									</foreach>
-								</select>
+				<div class="box box-info">
+					<div class="box-header with-border">
+					  <h3 class="box-title">发布视频</h3>
+					</div>
+					<form class="form-horizontal" action="{:U('Admin/Movie/movieHandle')}" id="add_post" method="post">
+						<div class="box-body">
+							<div class="form-group">
+							  <label for="inputEmail3" class="col-sm-2 control-label">视频标题<b class="cerror">*</b></label>
+							  <div class="col-sm-8">
+								<input type="text" class="form-control" value="{$info.title}" name="title" >
+							  </div>
 							</div>
-						</div>
-						</foreach>
-						<div class="form-group">
-							<label for="text" class="col-sm-2 control-label">展示图</label>                   	
-							<div class="col-sm-8"><input type="text" id="imagetext" name="thumb" value="{$info.thumb}" style="width:410px;"><input type="button" class="button" onClick="GetUploadify(1,'imagetext','moviebanner','')"  value="上传图片"/></div>
-						</div>
-						<div class="form-group">
-							<label for="text" class="col-sm-2 control-label">上传视频</label>                   	
-							<div class="col-sm-8"><input type="text" id="filetext" name="file_url" value="{$info.file_url}" style="width:410px;"><input type="button" class="button" onClick="GetUploadifymovie(1,'filetext','movie','')"  value="上传视频"/></div>
-						</div>
-						
-						<div class="form-group">
-							<label class="control-label col-sm-2">描述</label>
-							<div class="col-sm-8">
-							<textarea class="form-control" id="post_description" name="description" title="">{$info.description}</textarea>
+							<div class="form-group">
+							  <label for="inputEmail3" class="col-sm-2 control-label">视频类别<b class="cerror">*</b></label>
+							  <div class="col-sm-2">
+									<select class="small form-control" name="cat_id">
+										<option value="0">选择分类</option>
+										{$cat_select} 
+									</select>
+							  </div>
 							</div>
-						</div>   
-						<div class="form-group">
-						  <label for="text" class="col-sm-2 control-label">是否显示</label>
-						  <div class="col-sm-5">
-							<div class="col-sm-2">
-							   <label><input type="radio" name="is_open" value="1" <if condition="$info[is_open] eq 1 || $info[is_open] eq ''"> checked="checked"</if>> 显示 </label>                          
-							</div>
-							 <div class="col-sm-3">
-							   <label><input type="radio" name="is_open" value="0" <if condition="$info[is_open] eq 0"> checked="checked"</if>> 不显示</label>                          
-							</div>
-						  </div>
-						</div> 
-						<div class="form-group">
-							<label for="text" class="col-sm-2 control-label"></label>
-							<div class="col-sm-5">
+							<foreach name="attrs" item="val">
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-2 control-label">{$val.cat_name}</label>
 								<div class="col-sm-2">
-								   <label><input type="checkbox" name="is_recommend" value="1" <if condition="$info[is_recommend] eq 1"> checked="checked"</if>> 推荐 </label>                          
+									<select class="small form-control" name="{$val.identify}">
+										<option value="0">选择{$val.cat_name}</option>
+										<foreach name="val['child']" item="v">
+										<option value="{$v.id}" <if condition="$info[$val['identify']] == $v['id']">selected="selected"</if>>{$v.cat_name}</option>
+										</foreach>
+									</select>
 								</div>
-								<div class="col-sm-3">
-								   <label><input type="checkbox" name="is_hot" value="1" <if condition="$info[is_hot] eq 1"> checked="checked"</if>> 热点 </label>                          
-								</div>
-								<div class="col-sm-3">
-								   <label><input type="checkbox" name="index_show" value="1" <if condition="$info[index_show] eq 1"> checked="checked"</if>> 首页显示 </label>                          
-								</div>
+							</div>
+							</foreach>
+							<div class="form-group">
+								<label for="text" class="col-sm-2 control-label">展示图<b class="cerror">*</b></label>                   	
+								<div class="col-sm-8"><input type="text" id="imagetext" name="thumb" value="{$info.thumb}" style="width:410px;float:left;"><input type="button" class="button" onClick="GetUploadify(1,'imagetext','moviebanner','')"  value="上传图片" style="float:left;"/></div>
+							</div>
+							<div class="form-group">
+								<label for="text" class="col-sm-2 control-label">上传视频<b class="cerror">*</b></label>                   	
+								<div class="col-sm-8"><input type="text" id="filetext" name="file_url" value="{$info.file_url}" style="width:410px;float:left;"><input type="button" class="button" onClick="GetUploadifymovie(1,'filetext','movie','')"  value="上传视频" style="float:left;"/></div>
 							</div>
 							
-						</div>
-					  
-					  
-					  
-					
-					<!--
-                    <div class="form-group">
-                      <label for="text" class="col-sm-2 control-label">seo关键字</label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control" name="keywords"  value="{$info.keywords}">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="text" class="col-sm-2 control-label">外部链接</label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control" name="link"  value="{$info.link}">
-                      </div>
-                    </div>
-                    <div class="form-group">
-						<label for="text" class="col-sm-2 control-label">发布时间</label>
-						<div class="col-sm-8">
-                            <div class="input-prepend input-group">
-                                    <span class="add-on input-group-addon">
-                                            <i class="glyphicon glyphicon-calendar fa fa-calendar">
-                                            </i>
-                                    </span>
-                                <input type="text" class="form-control" id ="publish_time" name="publish_time"  value="{$info.publish_time|date='Y-m-d',###}" />                                            
-                            </div>                        
-						</div>
-					</div>
-                                         
-                    <div class="form-group">
-	                    <label class="control-label col-sm-2">文章内容</label>
-	                    <div class="col-sm-8">
-				        <textarea class="span12 ckeditor" id="post_content" name="content" title="">
-				            {$info.content}
-				        </textarea>
-	                    </div>
-                    </div>-->
+							<div class="form-group">
+								<label class="control-label col-sm-2">描述</label>
+								<div class="col-sm-8">
+								<textarea class="form-control" id="post_description" name="description" title="">{$info.description}</textarea>
+								</div>
+							</div>   
+							<div class="form-group">
+							  <label for="text" class="col-sm-2 control-label">是否显示</label>
+							  <div class="col-sm-5">
+								<div class="col-sm-2">
+								   <label><input type="radio" name="is_open" value="1" <if condition="$info[is_open] eq 1 || $info[is_open] eq ''"> checked="checked"</if>> 显示 </label>                          
+								</div>
+								 <div class="col-sm-3">
+								   <label><input type="radio" name="is_open" value="0" <if condition="$info[is_open] eq 0"> checked="checked"</if>> 不显示</label>                          
+								</div>
+							  </div>
+							</div> 
+							<div class="form-group">
+								<label for="text" class="col-sm-2 control-label"></label>
+								<div class="col-sm-5">
+									<div class="col-sm-2">
+									   <label><input type="checkbox" name="is_recommend" value="1" <if condition="$info[is_recommend] eq 1"> checked="checked"</if>> 推荐 </label>                          
+									</div>
+									<div class="col-sm-3">
+									   <label><input type="checkbox" name="is_hot" value="1" <if condition="$info[is_hot] eq 1"> checked="checked"</if>> 热点 </label>                          
+									</div>
+									<div class="col-sm-3">
+									   <label><input type="checkbox" name="index_show" value="1" <if condition="$info[index_show] eq 1"> checked="checked"</if>> 首页显示 </label>                          
+									</div>
+								</div>
+								
+							</div>
+						  
+						  
+						  
+						
+						<!--
 						<div class="form-group">
-							<label class="control-label col-sm-2">              
-								<input type="hidden" name="act" value="{$act}">
-								<input type="hidden" name="movie_id" value="{$info.movie_id}">
-							</label>
-							<div class="col-sm-8">
-								<button type="reset" class="btn btn-default">重置</button>
-								<button type="submit" class="btn btn-info pull-right">提交</button>
-							 </div>
+						  <label for="text" class="col-sm-2 control-label">seo关键字</label>
+						  <div class="col-sm-8">
+							<input type="text" class="form-control" name="keywords"  value="{$info.keywords}">
+						  </div>
 						</div>
-					</div>
-					<div class="box-footer row">
+						<div class="form-group">
+						  <label for="text" class="col-sm-2 control-label">外部链接</label>
+						  <div class="col-sm-8">
+							<input type="text" class="form-control" name="link"  value="{$info.link}">
+						  </div>
+						</div>
+						<div class="form-group">
+							<label for="text" class="col-sm-2 control-label">发布时间</label>
+							<div class="col-sm-8">
+								<div class="input-prepend input-group">
+										<span class="add-on input-group-addon">
+												<i class="glyphicon glyphicon-calendar fa fa-calendar">
+												</i>
+										</span>
+									<input type="text" class="form-control" id ="publish_time" name="publish_time"  value="{$info.publish_time|date='Y-m-d',###}" />                                            
+								</div>                        
+							</div>
+						</div>
+											 
+						<div class="form-group">
+							<label class="control-label col-sm-2">文章内容</label>
+							<div class="col-sm-8">
+							<textarea class="span12 ckeditor" id="post_content" name="content" title="">
+								{$info.content}
+							</textarea>
+							</div>
+						</div>-->
+							<div class="form-group">
+								<label class="control-label col-sm-2">              
+									<input type="hidden" name="act" value="{$act}">
+									<input type="hidden" name="movie_id" value="{$info.movie_id}">
+								</label>
+								<div class="col-sm-8">
+									<button type="reset" class="btn btn-default">重置</button>
+									<button type="submit" class="btn btn-info pull-right">提交</button>
+								 </div>
+							</div>
+						</div>
+						<div class="box-footer row">
 
-					</div>
-                </form>
-              </div>
+						</div>
+					</form>
+				</div>
 
-          </div>
-	   </div>
+			</div>
+		</div>
 	</section>
 </div>
 
 <script type="text/javascript">
-    
-	var editor;
-    $(function () {
-        //编辑器具体参数配置在  editor_config.js 中
+		$(function(){
+		//编辑器具体参数配置在  editor_config.js 中
        /* var options = {
             zIndex: 999,
             initialFrameWidth: "100%", //初化宽度
