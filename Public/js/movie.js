@@ -14,6 +14,7 @@ $(function(){
 			},
 			messages:{				
 				title:'请输入标题',
+				cat_id:'请选择分类',
 				thumb:'请上传展示图',
 				file_url:'请请上传视频',
 			},
@@ -21,7 +22,7 @@ $(function(){
 			
 		});
 		
-		jQuery.validator.addMethod("cat_required", function(value,element) {
+		$.validator.addMethod("cat_required", function(value,element) {
 			if(value == 0){
 				//return this.optional(element);
 				return false;
@@ -29,6 +30,6 @@ $(function(){
 				return true;
 			}
 			
-		}, "请选择分类");
+		});
 		
 });
